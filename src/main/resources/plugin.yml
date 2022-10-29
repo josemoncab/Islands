@@ -1,0 +1,6 @@
+name: Islands
+version: @version@
+main: dev.josemc.islands.Islands
+description: Custom gamemode with unique mechanics
+author: josemc
+api-version: 1.19
