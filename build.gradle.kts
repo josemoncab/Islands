@@ -17,6 +17,9 @@ repositories {
 dependencies {
     // Minestom CE
     implementation("dev.hollowcube:minestom-ce:${project.property("minestom")}")
+
+    // Logback
+    implementation("ch.qos.logback:logback-classic:${project.property("logback")}")
 }
 
 tasks {
