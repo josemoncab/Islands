@@ -20,6 +20,9 @@ dependencies {
 
     // Logback
     implementation("ch.qos.logback:logback-classic:${project.property("logback")}")
+
+    // Minimessage
+    implementation("net.kyori:adventure-text-minimessage:${project.property("minimessage")}")
 }
 
 tasks {
