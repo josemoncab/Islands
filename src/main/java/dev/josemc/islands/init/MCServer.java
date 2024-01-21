@@ -1,7 +1,7 @@
 package dev.josemc.islands.init;
 
 import ch.qos.logback.classic.Logger;
-import dev.josemc.islands.commands.HologramCommand;
+import dev.josemc.islands.commands.TextHologramCommand;
 import dev.josemc.islands.events.EventManager;
 import dev.josemc.islands.world.Instances;
 import net.minestom.server.MinecraftServer;
@@ -22,7 +22,7 @@ public class MCServer {
         MinestomAdventure.AUTOMATIC_COMPONENT_TRANSLATION = true;
         MinestomAdventure.COMPONENT_TRANSLATOR = (component, locale) -> component;
 
-        MinecraftServer.getSchedulerManager().buildShutdownTask(this::onStop);
+        MinecraftServer.getSchedulerManager().buildShutdownTask(MCServer::onStop);
 
         new Instances();
         EventManager.init();
@@ -36,12 +36,12 @@ public class MCServer {
         LOGGER.info(String.format("Server Started in %.2fs", (System.nanoTime() - initTime) / 1000000000f));
     }
 
-    private void onStop() {
+    public static void onStop() {
         MinecraftServer.stopCleanly();
     }
 
     private void registerCommands() {
         CommandManager commandManager = MinecraftServer.getCommandManager();
-        commandManager.register(new HologramCommand());
+        commandManager.register(new TextHologramCommand());
     }
 }

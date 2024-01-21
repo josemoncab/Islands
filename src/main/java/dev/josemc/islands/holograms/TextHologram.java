@@ -18,7 +18,7 @@ public class TextHologram implements Hologram {
     private final String name;
     private final UUID instance;
     private UUID entityUUID;
-    private final Pos position;
+    private Pos position;
     private final ArrayList<String> lines = new ArrayList<>();
 
     public TextHologram(String name, UUID instance, Pos position, String line) {
@@ -41,7 +41,7 @@ public class TextHologram implements Hologram {
     }
 
     public void addLine(String line) {
-        lines.add("\n" + line);
+        lines.add("<newline>" + line);
         this.update();
     }
 
@@ -50,13 +50,34 @@ public class TextHologram implements Hologram {
         this.update();
     }
 
-    private void update() {
+    public void modifyLine(int index, String line) {
+        lines.remove(index - 1);
+        lines.add(index - 1, "<newline>" + line);
+        this.update();
+    }
+
+    public void move(Pos pos) {
+        this.position = pos;
+        this.update();
+    }
+
+    public void kill() {
+        Entity entity = Entity.getEntity(entityUUID);
+        entity.remove();
+    }
+
+    public void update() {
         Entity entity = Entity.getEntity(entityUUID);
         TextDisplayMeta meta = (TextDisplayMeta) entity.getEntityMeta();
+        entity.teleport(position);
         TextComponent.Builder builder = Component.text();
-
         lines.forEach(l -> builder.append(AdventureUtils.parse(l)));
-
         meta.setText(builder.build());
+    }
+
+    @Override
+    public String toString() {
+        return String.format("TextHologram[%s]{Name: %s, Position: (%s, %f, %f, %f), Lines: %s}",
+                uuid, name, instance, position.x(), position.y(), position.z(), lines);
     }
 }
